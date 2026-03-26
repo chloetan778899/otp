@@ -16,13 +16,10 @@
       --border: #e5e5e5;
       --primary: #3b82f6;
       --card-shadow: 0 1px 2px rgba(0,0,0,0.05);
-      
-      /* Light Mode Pastel Colors */
       --day-bg: #fefce8; 
       --day-text: #a16207;
       --night-bg: #f0f9ff; 
       --night-text: #0369a1;
-      
       --hover-bracket: rgba(23, 23, 23, 0.08);
       --hover-bracket-border: #171717;
       --current-time: rgba(239, 68, 68, 0.08); 
@@ -36,13 +33,10 @@
       --text-muted: #888888;
       --border: #262626;
       --card-shadow: none;
-
-      /* Dark Mode Muted/Aesthetic Colors */
       --day-bg: #22221e;
       --day-text: #d4d4aa;
       --night-bg: #141a21;
       --night-text: #a6c4d6;
-      
       --hover-bracket: rgba(237, 237, 237, 0.08);
       --hover-bracket-border: #ededed;
       --current-time: rgba(251, 113, 133, 0.08);
@@ -57,7 +51,6 @@
       padding: 1.5rem; max-width: 1200px; margin: 0 auto;
     }
 
-    /* Header */
     header { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 1.5rem; gap: 0.5rem; }
     
     .icon-btn {
@@ -71,7 +64,6 @@
 
     h2 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
 
-    /* Ultra-Compact OTP Grid */
     .otp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.75rem; margin-bottom: 2.5rem; }
 
     .otp-card {
@@ -86,7 +78,6 @@
     .company-name { font-size: 0.65rem; color: var(--text-muted); margin-bottom: 0.15rem; font-weight: 500; }
     .otp-code { font-size: 1.15rem; font-weight: 700; letter-spacing: 1px; }
 
-    /* Tiny SVG Ticker */
     .countdown-wrapper { position: relative; width: 20px; height: 20px; flex-shrink: 0; }
     .countdown-svg { transform: rotate(-90deg); width: 100%; height: 100%; }
     .countdown-bg { fill: none; stroke: var(--border); stroke-width: 4; }
@@ -95,7 +86,6 @@
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
     .danger-blink { stroke: var(--current-time-border) !important; animation: blink 1s infinite; }
 
-    /* Toast */
     .toast {
       position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px);
       background: var(--text); color: var(--bg); padding: 0.5rem 1rem;
@@ -104,7 +94,6 @@
     }
     .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-    /* Timezone Grid */
     .tz-container {
       background: var(--surface); border-radius: 10px; box-shadow: var(--card-shadow);
       border: 1px solid var(--border); overflow-x: auto; position: relative;
@@ -114,7 +103,6 @@
     .tz-row { display: flex; align-items: stretch; margin: 0; border-bottom: 1px solid var(--border); }
     .tz-row:last-child { border-bottom: none; }
 
-    /* Strict Label Box Sizing */
     .tz-label-box {
       flex: 0 0 240px; width: 240px; padding: 0.75rem 1rem;
       position: sticky; left: 0; background: var(--surface); z-index: 20;
@@ -142,7 +130,6 @@
     .day-cell { background-color: var(--day-bg); color: var(--day-text); }
     .night-cell { background-color: var(--night-bg); color: var(--night-text); }
 
-    /* Full Box Absolute Brackets - Inset by 1px so they don't get clipped by the container */
     .bracket {
       position: absolute; top: 1px; bottom: 1px; width: 55px;
       pointer-events: none; z-index: 10; display: none;
@@ -290,7 +277,8 @@
       { city: { en: "Denver, US", zh: "丹佛, 美国" }, name: { en: "Mountain Time", zh: "山地时间" }, abbr: "MT", id: "America/Denver" },
       { city: { en: "Los Angeles, US", zh: "洛杉矶, 美国" }, name: { en: "Pacific Time", zh: "太平洋时间" }, abbr: "PT", id: "America/Los_Angeles" },
       { city: { en: "Anchorage, US", zh: "安克雷奇, 美国" }, name: { en: "Alaska Time", zh: "阿拉斯加时间" }, abbr: "AKT", id: "America/Anchorage" },
-      { city: { en: "Honolulu, US", zh: "檀香山, 美国" }, name: { en: "Hawaii Time", zh: "夏威夷时间" }, abbr: "HT", id: "Pacific/Honolulu" }
+      { city: { en: "Honolulu, US", zh: "檀香山, 美国" }, name: { en: "Hawaii Time", zh: "夏威夷时间" }, abbr: "HT", id: "Pacific/Honolulu" },
+      { city: { en: "Madrid, ES", zh: "马德里, 西班牙" }, name: { en: "Central European Time", zh: "欧洲中部时间" }, abbr: "CET", id: "Europe/Madrid" }
     ];
 
     function getUTCOffset(timeZone, date) {
