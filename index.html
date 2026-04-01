@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/otpauth/9.2.2/otpauth.umd.min.js"></script>
   
   <style>
@@ -23,7 +24,9 @@
       --hover-bracket: rgba(23, 23, 23, 0.08);
       --hover-bracket-border: #171717;
       --current-time: rgba(239, 68, 68, 0.08); 
-      --current-time-border: #ef4444; 
+      --current-time-border: #ef4444;
+      --success: #10b981;
+      --error: #ef4444; 
     }
 
     body.dark {
@@ -65,7 +68,6 @@
     h2 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
 
     .otp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.75rem; margin-bottom: 2.5rem; }
-
     .otp-card {
       background: var(--surface); border-radius: 8px; padding: 0.75rem;
       box-shadow: var(--card-shadow); border: 1px solid var(--border);
@@ -74,15 +76,49 @@
     }
     .otp-card:hover { border-color: var(--text-muted); }
     .otp-card:active { transform: scale(0.97); }
-
     .company-name { font-size: 0.65rem; color: var(--text-muted); margin-bottom: 0.15rem; font-weight: 500; }
     .otp-code { font-size: 1.15rem; font-weight: 700; letter-spacing: 1px; }
 
+    .eth-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2.5rem; }
+    @media (max-width: 768px) { .eth-container { grid-template-columns: 1fr; } }
+    
+    .tool-card {
+      background: var(--surface); border-radius: 8px; padding: 1.25rem;
+      box-shadow: var(--card-shadow); border: 1px solid var(--border);
+    }
+    .tool-title { font-size: 0.8rem; font-weight: 600; margin-bottom: 1rem; color: var(--text); }
+    
+    /* Generator UI */
+    .eth-address-box {
+      background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
+      padding: 0.75rem; display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1rem; font-family: monospace; font-size: 0.9rem;
+    }
+    .eth-address-text { flex: 1; word-break: break-all; margin-right: 0.5rem; letter-spacing: 0.5px;}
+    .action-icons { display: flex; gap: 0.5rem; }
+    .action-icons .material-symbols-outlined { font-size: 20px; color: var(--text-muted); cursor: pointer; transition: color 0.2s; }
+    .action-icons .material-symbols-outlined:hover { color: var(--text); }
+
+    .eth-input-group { position: relative; margin-bottom: 0.75rem; display: flex; flex-direction: column; gap: 0.25rem; }
+    .eth-input {
+      width: 100%; padding: 0.75rem; padding-right: 3rem;
+      background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
+      color: var(--text); font-family: monospace; font-size: 0.85rem; outline: none; transition: border-color 0.2s;
+    }
+    .eth-input:focus { border-color: var(--primary); }
+    .char-count { position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); font-size: 0.7rem; color: var(--text-muted); font-weight: 600; }
+    
+    .match-status { display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem; font-weight: 600; font-size: 0.85rem; }
+    .status-icon { font-size: 20px; }
+    .match-success { color: var(--success); }
+    .match-error { color: var(--error); }
+    .match-neutral { color: var(--text-muted); }
+
+    /* COUNTDOWN & TOAST & TIMEZONE STYLES */
     .countdown-wrapper { position: relative; width: 20px; height: 20px; flex-shrink: 0; }
     .countdown-svg { transform: rotate(-90deg); width: 100%; height: 100%; }
     .countdown-bg { fill: none; stroke: var(--border); stroke-width: 4; }
     .countdown-progress { fill: none; stroke: var(--primary); stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
-    
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
     .danger-blink { stroke: var(--current-time-border) !important; animation: blink 1s infinite; }
 
@@ -94,56 +130,22 @@
     }
     .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-    .tz-container {
-      background: var(--surface); border-radius: 10px; box-shadow: var(--card-shadow);
-      border: 1px solid var(--border); overflow-x: auto; position: relative;
-    }
-
+    .tz-container { background: var(--surface); border-radius: 10px; box-shadow: var(--card-shadow); border: 1px solid var(--border); overflow-x: auto; position: relative; }
     .tz-scroll-wrapper { position: relative; min-width: max-content; display: flex; flex-direction: column; }
     .tz-row { display: flex; align-items: stretch; margin: 0; border-bottom: 1px solid var(--border); }
     .tz-row:last-child { border-bottom: none; }
-
-    .tz-label-box {
-      flex: 0 0 240px; width: 240px; padding: 0.75rem 1rem;
-      position: sticky; left: 0; background: var(--surface); z-index: 20;
-      border-right: 1px solid var(--border);
-      display: flex; flex-direction: column; justify-content: center;
-    }
-    
-    .tz-card-header {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      margin-bottom: 2px; width: 100%;
-    }
-    
+    .tz-label-box { flex: 0 0 240px; width: 240px; padding: 0.75rem 1rem; position: sticky; left: 0; background: var(--surface); z-index: 20; border-right: 1px solid var(--border); display: flex; flex-direction: column; justify-content: center; }
+    .tz-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px; width: 100%; }
     .tz-utc { background: var(--border); color: var(--text); font-size: 0.65rem; padding: 3px 6px; border-radius: 4px; font-weight: 600; margin-left: auto; }
     .tz-city { font-weight: 600; font-size: 0.9rem; color: var(--text); }
     .tz-full-name { font-size: 0.65rem; color: var(--text-muted); font-weight: 500; }
-
     .tz-hours { display: flex; }
-
-    .tz-cell {
-      width: 55px; display: flex; flex-direction: column; justify-content: center; align-items: center;
-      font-size: 0.65rem; font-weight: 600; cursor: default; padding: 0.75rem 0;
-      position: relative; z-index: 5;
-    }
-
+    .tz-cell { width: 55px; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 0.65rem; font-weight: 600; cursor: default; padding: 0.75rem 0; position: relative; z-index: 5; }
     .day-cell { background-color: var(--day-bg); color: var(--day-text); }
     .night-cell { background-color: var(--night-bg); color: var(--night-text); }
-
-    .bracket {
-      position: absolute; top: 1px; bottom: 1px; width: 55px;
-      pointer-events: none; z-index: 10; display: none;
-      border-radius: 6px; box-sizing: border-box;
-    }
-    .hover-bracket {
-      background: var(--hover-bracket);
-      border: 2px solid var(--hover-bracket-border);
-    }
-    .current-bracket {
-      background: var(--current-time);
-      border: 2px solid var(--current-time-border);
-      display: block; 
-    }
+    .bracket { position: absolute; top: 1px; bottom: 1px; width: 55px; pointer-events: none; z-index: 10; display: none; border-radius: 6px; box-sizing: border-box; }
+    .hover-bracket { background: var(--hover-bracket); border: 2px solid var(--hover-bracket-border); }
+    .current-bracket { background: var(--current-time); border: 2px solid var(--current-time-border); display: block; }
   </style>
 </head>
 <body>
@@ -163,6 +165,41 @@
     <h2 id="otp-title">Authenticators</h2>
     <section class="otp-grid" id="otp-grid"></section>
 
+    <h2 id="eth-main-title">Ethereum Tools</h2>
+    <section class="eth-container">
+      
+      <div class="tool-card">
+        <div class="tool-title" id="eth-gen-title">Random Address Generator</div>
+        <div class="eth-address-box">
+          <span class="eth-address-text" id="eth-generated-addr"></span>
+          <div class="action-icons">
+            <span class="material-symbols-outlined" onclick="copyEthAddress()" title="Copy">content_copy</span>
+            <span class="material-symbols-outlined" onclick="generateRandomEth()" title="Refresh">refresh</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-title" id="eth-comp-title">Address Comparator</div>
+        
+        <div class="eth-input-group">
+          <input type="text" id="eth-input-1" class="eth-input" placeholder="Paste address 1..." oninput="compareAddresses()">
+          <span class="char-count"><span id="count-1">0</span></span>
+        </div>
+        
+        <div class="eth-input-group">
+          <input type="text" id="eth-input-2" class="eth-input" placeholder="Paste address 2..." oninput="compareAddresses()">
+          <span class="char-count"><span id="count-2">0</span></span>
+        </div>
+
+        <div class="match-status match-neutral" id="match-container">
+          <span class="material-symbols-outlined status-icon" id="match-icon">horizontal_rule</span>
+          <span id="match-text">Waiting for input...</span>
+        </div>
+      </div>
+
+    </section>
+
     <h2 id="tz-title">World Time</h2>
     <section class="tz-container" id="tz-container"></section>
   </main>
@@ -172,12 +209,68 @@
     let currentLang = 'en';
     
     const dict = {
-      en: { otpTitle: "Authenticators", tzTitle: "World Time", copied: "Copied!" },
-      zh: { otpTitle: "身份验证器", tzTitle: "世界时间", copied: "已复制!" }
+      en: { 
+        otpTitle: "Authenticators", tzTitle: "World Time", copied: "Copied!",
+        ethMainTitle: "Ethereum Tools", ethGenTitle: "Random Address Generator",
+        ethCompTitle: "Address Comparator", p1: "Paste address 1...", p2: "Paste address 2...",
+        match: "Addresses Match", mismatch: "Addresses Do Not Match", waiting: "Waiting for input..."
+      },
+      zh: { 
+        otpTitle: "身份验证器", tzTitle: "世界时间", copied: "已复制!",
+        ethMainTitle: "以太坊工具", ethGenTitle: "随机地址生成器",
+        ethCompTitle: "地址对比器", p1: "粘贴地址 1...", p2: "粘贴地址 2...",
+        match: "地址完全匹配", mismatch: "地址不匹配", waiting: "等待输入..."
+      }
     };
 
     const sunIcon = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:2px"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
     const moonIcon = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:2px"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+
+    function generateRandomEth() {
+      const chars = '0123456789abcdef';
+      let address = '0x';
+      for (let i = 0; i < 40; i++) {
+        address += chars[Math.floor(Math.random() * 16)];
+      }
+      document.getElementById('eth-generated-addr').innerText = address;
+    }
+
+    function copyEthAddress() {
+      const text = document.getElementById('eth-generated-addr').innerText;
+      navigator.clipboard.writeText(text).then(showToast);
+    }
+
+    function compareAddresses() {
+      const val1 = document.getElementById('eth-input-1').value.trim();
+      const val2 = document.getElementById('eth-input-2').value.trim();
+      
+      document.getElementById('count-1').innerText = val1.length;
+      document.getElementById('count-2').innerText = val2.length;
+
+      const container = document.getElementById('match-container');
+      const icon = document.getElementById('match-icon');
+      const text = document.getElementById('match-text');
+
+      if (val1 === "" || val2 === "") {
+        container.className = 'match-status match-neutral';
+        icon.innerText = 'horizontal_rule';
+        text.innerText = dict[currentLang].waiting;
+        return;
+      }
+
+      if (val1.toLowerCase() === val2.toLowerCase()) {
+        container.className = 'match-status match-success';
+        icon.innerText = 'check_circle';
+        text.innerText = dict[currentLang].match;
+      } 
+      else {
+        container.className = 'match-status match-error';
+        icon.innerText = 'cancel';
+        text.innerText = dict[currentLang].mismatch;
+      }
+    }
+
+    generateRandomEth();
 
     async function syncTime() {
       try {
@@ -200,8 +293,17 @@
 
     function toggleLang() {
       currentLang = currentLang === 'en' ? 'zh' : 'en';
+      
       document.getElementById('otp-title').innerText = dict[currentLang].otpTitle;
       document.getElementById('tz-title').innerText = dict[currentLang].tzTitle;
+      
+      document.getElementById('eth-main-title').innerText = dict[currentLang].ethMainTitle;
+      document.getElementById('eth-gen-title').innerText = dict[currentLang].ethGenTitle;
+      document.getElementById('eth-comp-title').innerText = dict[currentLang].ethCompTitle;
+      document.getElementById('eth-input-1').placeholder = dict[currentLang].p1;
+      document.getElementById('eth-input-2').placeholder = dict[currentLang].p2;
+      
+      compareAddresses(); 
       renderTimezones(); 
     }
 
