@@ -61,13 +61,23 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
 
+    /* FIXED CENTERING: Let body span full width, use flexbox to center content */
     body {
       background-color: var(--bg); color: var(--text);
       transition: background-color 0.2s, color 0.2s;
-      padding: 1.5rem; max-width: 1200px; margin: 0 auto;
+      min-height: 100vh;
+      margin: 0;
+      padding: 1.5rem;
+      display: flex;
+      justify-content: center; /* This perfectly centers the app-wrapper horizontally */
+    }
+
+    /* FIXED CENTERING: The 1200px constraint is now safely on this wrapper */
+    .app-wrapper {
+      width: 100%;
+      max-width: 1200px;
       display: flex;
       flex-direction: column;
-      align-items: center; 
     }
 
     header { 
@@ -80,14 +90,8 @@
       width: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center; 
     }
 
-    /* Keep inner elements stretching properly */
-    .otp-grid, .eth-container, .tz-container { 
-      width: 100%; 
-    }
-    
     h2 { 
       width: 100%; 
       font-size: 0.85rem; font-weight: 600; margin-bottom: 0.75rem; 
@@ -103,7 +107,12 @@
     .icon-btn:hover { background: var(--border); }
     .lang-btn { padding: 0 0.75rem; width: auto; font-weight: 500; font-size: 0.8rem; }
 
-    .otp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.75rem; margin-bottom: 2.5rem; }
+    /* Added justify-content: center so cards float neatly to the middle */
+    .otp-grid { 
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
+      gap: 0.75rem; margin-bottom: 2.5rem; width: 100%; justify-content: center;
+    }
+    
     .otp-card {
       background: var(--surface); border-radius: 8px; padding: 0.75rem;
       box-shadow: var(--card-shadow); border: 1px solid var(--border);
@@ -115,7 +124,7 @@
     .company-name { font-size: 0.65rem; color: var(--text-muted); margin-bottom: 0.15rem; font-weight: 500; }
     .otp-code { font-size: 1.15rem; font-weight: 700; letter-spacing: 1px; }
 
-    .eth-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2.5rem; }
+    .eth-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2.5rem; width: 100%; }
     @media (max-width: 768px) { .eth-container { grid-template-columns: 1fr; } }
     
     .tool-card {
@@ -166,7 +175,7 @@
     }
     .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-    .tz-container { background: var(--surface); border-radius: 10px; box-shadow: var(--card-shadow); border: 1px solid var(--border); overflow-x: auto; position: relative; }
+    .tz-container { width: 100%; background: var(--surface); border-radius: 10px; box-shadow: var(--card-shadow); border: 1px solid var(--border); overflow-x: auto; position: relative; }
     .tz-scroll-wrapper { position: relative; min-width: max-content; display: flex; flex-direction: column; }
     .tz-row { display: flex; align-items: stretch; margin: 0; border-bottom: 1px solid var(--border); }
     .tz-row:last-child { border-bottom: none; }
@@ -185,150 +194,152 @@
 
     /* Receipt Specific Styles */
     .receipt-font { font-family: 'Inter', sans-serif; }
-    .receipt-card {
-        box-shadow: 0 20px 40px -15px rgba(0,0,0,0.1);
-    }
+    .receipt-card { box-shadow: 0 20px 40px -15px rgba(0,0,0,0.1); }
   </style>
 </head>
 <body>
 
-  <header>
-    <button class="icon-btn lang-btn" onclick="toggleLang()" id="langBtn">EN / 中文</button>
-    <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">
-      <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-      </svg>
-    </button>
-  </header>
+  <!-- FIXED CENTERING: The new app-wrapper limits width to 1200px but floats right in the center -->
+  <div class="app-wrapper">
+    <header>
+      <button class="icon-btn lang-btn" onclick="toggleLang()" id="langBtn">EN / 中文</button>
+      <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">
+        <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
+    </header>
 
-  <div id="toast" class="toast">Copied to clipboard</div>
+    <div id="toast" class="toast">Copied to clipboard</div>
 
-  <main>
-    <h2 id="otp-title">Authenticators</h2>
-    <section class="otp-grid" id="otp-grid"></section>
+    <main>
+      <h2 id="otp-title">Authenticators</h2>
+      <section class="otp-grid" id="otp-grid"></section>
 
-    <h2 id="eth-main-title">Ethereum Tools</h2>
-    <section class="eth-container">
-      
-      <div class="tool-card">
-        <div class="tool-title" id="eth-gen-title">Random Address Generator</div>
-        <div class="eth-address-box">
-          <span class="eth-address-text" id="eth-generated-addr"></span>
-          <div class="action-icons">
-            <span class="material-symbols-outlined" onclick="copyEthAddress()" title="Copy">content_copy</span>
-            <span class="material-symbols-outlined" onclick="generateRandomEth()" title="Refresh">refresh</span>
+      <h2 id="eth-main-title">Ethereum Tools</h2>
+      <section class="eth-container">
+        
+        <div class="tool-card">
+          <div class="tool-title" id="eth-gen-title">Random Address Generator</div>
+          <div class="eth-address-box">
+            <span class="eth-address-text" id="eth-generated-addr"></span>
+            <div class="action-icons">
+              <span class="material-symbols-outlined" onclick="copyEthAddress()" title="Copy">content_copy</span>
+              <span class="material-symbols-outlined" onclick="generateRandomEth()" title="Refresh">refresh</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="tool-card">
-        <div class="tool-title" id="eth-comp-title">Address Comparator</div>
-        
-        <div class="eth-input-group">
-          <input type="text" id="eth-input-1" class="eth-input" placeholder="Paste address 1..." oninput="compareAddresses()">
-          <span class="char-count"><span id="count-1">0</span></span>
+        <div class="tool-card">
+          <div class="tool-title" id="eth-comp-title">Address Comparator</div>
+          
+          <div class="eth-input-group">
+            <input type="text" id="eth-input-1" class="eth-input" placeholder="Paste address 1..." oninput="compareAddresses()">
+            <span class="char-count"><span id="count-1">0</span></span>
+          </div>
+          
+          <div class="eth-input-group">
+            <input type="text" id="eth-input-2" class="eth-input" placeholder="Paste address 2..." oninput="compareAddresses()">
+            <span class="char-count"><span id="count-2">0</span></span>
+          </div>
+
+          <div class="match-status match-neutral" id="match-container">
+            <span class="material-symbols-outlined status-icon" id="match-icon">horizontal_rule</span>
+            <span id="match-text">Waiting for input...</span>
+          </div>
         </div>
-        
-        <div class="eth-input-group">
-          <input type="text" id="eth-input-2" class="eth-input" placeholder="Paste address 2..." oninput="compareAddresses()">
-          <span class="char-count"><span id="count-2">0</span></span>
-        </div>
+      </section>
 
-        <div class="match-status match-neutral" id="match-container">
-          <span class="material-symbols-outlined status-icon" id="match-icon">horizontal_rule</span>
-          <span id="match-text">Waiting for input...</span>
-        </div>
-      </div>
-    </section>
+      <!-- MERGED RECEIPT GENERATOR -->
+      <h2 id="receipt-main-title">Payroll Receipt Generator</h2>
+      <section class="w-full p-8 flex flex-col md:flex-row gap-8 items-center justify-center rounded-xl mb-10 border border-zinc-200 dark:border-[#262626]">
+          
+          <!-- Control Panel (Now Adapts to Dark Theme) -->
+          <div class="w-full max-w-md bg-white dark:bg-[#121212] p-6 rounded-2xl shadow-sm border border-zinc-200 dark:border-[#262626]">
+              <h3 class="text-xl font-bold mb-4 border-b border-zinc-200 dark:border-[#262626] pb-2 dark:text-[#ededed]">Payout Details</h3>
+              <div class="space-y-4">
+                  <div>
+                      <label class="block text-sm font-medium text-zinc-700 dark:text-[#888888]">Amount ($)</label>
+                      <input type="text" id="input-amount" value="5,420.00" class="w-full p-2 border border-zinc-200 dark:border-[#262626] bg-white dark:bg-[#0a0a0a] dark:text-[#ededed] rounded-lg mt-1 focus:ring-2 focus:ring-blue-500 outline-none">
+                  </div>
+                  <div>
+                      <label class="block text-sm font-medium text-zinc-700 dark:text-[#888888]">Title</label>
+                      <input type="text" id="input-title" value="Cycle Payout" class="w-full p-2 border border-zinc-200 dark:border-[#262626] bg-white dark:bg-[#0a0a0a] dark:text-[#ededed] rounded-lg mt-1 focus:ring-2 focus:ring-blue-500 outline-none">
+                  </div>
+                  <div>
+                      <label class="block text-sm font-medium text-zinc-700 dark:text-[#888888]">Payment Method</label>
+                      <input type="text" id="input-method" value="Tokenized Asset" class="w-full p-2 border border-zinc-200 dark:border-[#262626] bg-white dark:bg-[#0a0a0a] dark:text-[#ededed] rounded-lg mt-1 focus:ring-2 focus:ring-blue-500 outline-none">
+                  </div>
+                  <div>
+                      <label class="block text-sm font-medium text-zinc-700 dark:text-[#888888]">Issue Date</label>
+                      <input type="text" id="input-date" class="w-full p-2 border border-zinc-200 dark:border-[#262626] bg-white dark:bg-[#0a0a0a] dark:text-[#ededed] rounded-lg mt-1 focus:ring-2 focus:ring-blue-500 outline-none">
+                  </div>
+                  <div>
+                      <label class="block text-sm font-medium text-zinc-700 dark:text-[#888888]">Status</label>
+                      <input type="text" id="input-status" value="Processed" class="w-full p-2 border border-zinc-200 dark:border-[#262626] bg-white dark:bg-[#0a0a0a] rounded-lg mt-1 focus:ring-2 focus:ring-blue-500 outline-none text-green-600 font-medium">
+                  </div>
+                  <button onclick="copyReceipt()" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-md mt-4">
+                      Generate & Copy
+                  </button>
+                  <p id="status-msg" class="text-center text-sm font-medium text-green-600 hidden mt-2">✓ HD Image Copied to Clipboard!</p>
+              </div>
+          </div>
 
-    <!-- MERGED RECEIPT GENERATOR -->
-    <h2 id="receipt-main-title">Payroll Receipt Generator</h2>
-    <section class="w-full p-8 flex flex-col md:flex-row gap-8 items-center justify-center rounded-xl mb-10 border border-zinc-200 dark:border-[#262626]">
-        
-        <!-- Control Panel (Now Adapts to Dark Theme) -->
-        <div class="w-full max-w-md bg-white dark:bg-[#121212] p-6 rounded-2xl shadow-sm border border-zinc-200 dark:border-[#262626]">
-            <h3 class="text-xl font-bold mb-4 border-b border-zinc-200 dark:border-[#262626] pb-2 dark:text-[#ededed]">Payout Details</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-zinc-700 dark:text-[#888888]">Amount ($)</label>
-                    <input type="text" id="input-amount" value="5,420.00" class="w-full p-2 border border-zinc-200 dark:border-[#262626] bg-white dark:bg-[#0a0a0a] dark:text-[#ededed] rounded-lg mt-1 focus:ring-2 focus:ring-blue-500 outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-zinc-700 dark:text-[#888888]">Title</label>
-                    <input type="text" id="input-title" value="Cycle Payout" class="w-full p-2 border border-zinc-200 dark:border-[#262626] bg-white dark:bg-[#0a0a0a] dark:text-[#ededed] rounded-lg mt-1 focus:ring-2 focus:ring-blue-500 outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-zinc-700 dark:text-[#888888]">Payment Method</label>
-                    <input type="text" id="input-method" value="Tokenized Asset" class="w-full p-2 border border-zinc-200 dark:border-[#262626] bg-white dark:bg-[#0a0a0a] dark:text-[#ededed] rounded-lg mt-1 focus:ring-2 focus:ring-blue-500 outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-zinc-700 dark:text-[#888888]">Issue Date</label>
-                    <input type="text" id="input-date" class="w-full p-2 border border-zinc-200 dark:border-[#262626] bg-white dark:bg-[#0a0a0a] dark:text-[#ededed] rounded-lg mt-1 focus:ring-2 focus:ring-blue-500 outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-zinc-700 dark:text-[#888888]">Status</label>
-                    <input type="text" id="input-status" value="Processed" class="w-full p-2 border border-zinc-200 dark:border-[#262626] bg-white dark:bg-[#0a0a0a] rounded-lg mt-1 focus:ring-2 focus:ring-blue-500 outline-none text-green-600 font-medium">
-                </div>
-                <button onclick="copyReceipt()" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-md mt-4">
-                    Generate & Copy
-                </button>
-                <p id="status-msg" class="text-center text-sm font-medium text-green-600 hidden mt-2">✓ Copied to Clipboard</p>
-            </div>
-        </div>
+          <!-- Receipt Preview (Hardcoded to stay Light so exported images always look correct) -->
+          <div id="receipt-target" class="receipt-card receipt-font w-full max-w-[450px] p-8 rounded-3xl border border-zinc-100 relative overflow-hidden bg-white shrink-0">
+              
+              <!-- Header with SMALLER LOGO (h-8 instead of h-12) -->
+              <div class="flex flex-col items-center justify-center mb-8 w-full border-b border-zinc-100 pb-6">
+                  <img src="company1.png" alt="Company Logo" class="h-10 w-auto object-contain">
+              </div>
 
-        <!-- Receipt Preview (Hardcoded to stay Light so exported images always look correct) -->
-        <div id="receipt-target" class="receipt-card receipt-font w-full max-w-[450px] p-8 rounded-3xl border border-zinc-100 relative overflow-hidden bg-white shrink-0">
-            <!-- Header -->
-            <div class="flex flex-col items-center justify-center mb-8 w-full border-b border-zinc-100 pb-6">
-                <img src="company1.png" alt="Company Logo" class="h-10 w-auto object-contain">
-            </div>
+              <!-- Main Status -->
+              <div class="text-center mb-8">
+                  <!-- Success Tick Icon -->
+                  <div class="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                  </div>
+                  <h1 class="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-2">PAID</h1>
+                  <p id="view-amount" class="text-4xl font-extrabold text-zinc-900 break-words">$5,420.00</p>
+              </div>
 
-            <!-- Main Status -->
-            <div class="text-center mb-8">
-                <!-- Success Tick Icon -->
-                <div class="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                </div>
-                <h1 class="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-2">PAID</h1>
-                <p id="view-amount" class="text-4xl font-extrabold text-zinc-900 break-words">$5,420.00</p>
-            </div>
+              <!-- Details Box -->
+              <div class="bg-zinc-50 rounded-2xl p-5 space-y-4 mb-6 border border-zinc-100 text-sm">
+                  <div class="flex justify-between items-start gap-4">
+                      <span class="text-zinc-500 font-medium whitespace-nowrap">Payment Method</span>
+                      <span id="view-method" class="font-semibold text-zinc-800 text-right break-words">Tokenized Asset</span>
+                  </div>
+                  <div class="flex justify-between items-start gap-4">
+                      <span class="text-zinc-500 font-medium whitespace-nowrap">Title</span>
+                      <span id="view-title" class="font-semibold text-zinc-800 text-right break-words">Cycle Payout</span>
+                  </div>
+                  <div class="flex justify-between items-start gap-4">
+                      <span class="text-zinc-500 font-medium whitespace-nowrap">Issue Date</span>
+                      <span id="view-date" class="font-semibold text-zinc-800 text-right break-words"></span>
+                  </div>
+                  <div class="flex justify-between items-start gap-4 border-t border-zinc-200 pt-3 mt-1">
+                      <span class="text-zinc-500 font-medium whitespace-nowrap">Status</span>
+                      <span id="view-status" class="font-bold text-green-600 text-right break-words">Processed</span>
+                  </div>
+              </div>
 
-            <!-- Details Box -->
-            <div class="bg-zinc-50 rounded-2xl p-5 space-y-4 mb-6 border border-zinc-100 text-sm">
-                <div class="flex justify-between items-start gap-4">
-                    <span class="text-zinc-500 font-medium whitespace-nowrap">Payment Method</span>
-                    <span id="view-method" class="font-semibold text-zinc-800 text-right break-words">Tokenized Asset</span>
-                </div>
-                <div class="flex justify-between items-start gap-4">
-                    <span class="text-zinc-500 font-medium whitespace-nowrap">Title</span>
-                    <span id="view-title" class="font-semibold text-zinc-800 text-right break-words">Cycle Payout</span>
-                </div>
-                <div class="flex justify-between items-start gap-4">
-                    <span class="text-zinc-500 font-medium whitespace-nowrap">Issue Date</span>
-                    <span id="view-date" class="font-semibold text-zinc-800 text-right break-words"></span>
-                </div>
-                <div class="flex justify-between items-start gap-4 border-t border-zinc-200 pt-3 mt-1">
-                    <span class="text-zinc-500 font-medium whitespace-nowrap">Status</span>
-                    <span id="view-status" class="font-bold text-green-600 text-right break-words">Processed</span>
-                </div>
-            </div>
+              <!-- Disclaimer Note -->
+              <div class="border-t border-zinc-200 pt-5">
+                  <p class="text-[10px] leading-relaxed text-zinc-400 text-justify m-0">
+                      This document confirms both the financial transaction and the physical/digital presence of the participant as official proof of payments. Payouts are subject to bank or exchange processing times and market exchange rate fluctuations. Any intermediary bank fees or conversion charges are the recipient's responsibility. Once initiated, transactions are final and based on the account details provided.
+                      <br><br>
+                      <span class="font-semibold text-zinc-500">Please check your receiving bank or wallet and revert to us, thank you.</span>
+                  </p>
+              </div>
+          </div>
+      </section>
 
-            <!-- Disclaimer Note -->
-            <div class="border-t border-zinc-200 pt-5">
-                <p class="text-[10px] leading-relaxed text-zinc-400 text-justify m-0">
-                    This document confirms both the financial transaction and the physical/digital presence of the participant as official proof of payments. Payouts are subject to bank or exchange processing times and market exchange rate fluctuations. Any intermediary bank fees or conversion charges are the recipient's responsibility. Once initiated, transactions are final and based on the account details provided.
-                    <br><br>
-                    <span class="font-semibold text-zinc-500">Please check your receiving bank or wallet and revert to us, thank you.</span>
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <h2 id="tz-title">World Time</h2>
-    <section class="tz-container" id="tz-container"></section>
-  </main>
+      <h2 id="tz-title">World Time</h2>
+      <section class="tz-container" id="tz-container"></section>
+    </main>
+  </div> <!-- End of app-wrapper -->
 
   <script>
     let timeOffsetMs = 0;
