@@ -14,6 +14,13 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
   
+  <!-- Enable Tailwind Dark Mode based on your body class -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
+  
   <style>
     :root {
       --bg: #fafafa;
@@ -58,10 +65,35 @@
       background-color: var(--bg); color: var(--text);
       transition: background-color 0.2s, color 0.2s;
       padding: 1.5rem; max-width: 1200px; margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center; 
     }
 
-    header { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 1.5rem; gap: 0.5rem; }
+    header { 
+      display: flex; justify-content: flex-end; align-items: center; 
+      margin-bottom: 1.5rem; gap: 0.5rem; 
+      width: 100%; 
+    }
+
+    main {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center; 
+    }
+
+    /* Keep inner elements stretching properly */
+    .otp-grid, .eth-container, .tz-container { 
+      width: 100%; 
+    }
     
+    h2 { 
+      width: 100%; 
+      font-size: 0.85rem; font-weight: 600; margin-bottom: 0.75rem; 
+      color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; 
+    }
+
     .icon-btn {
       background: var(--surface); color: var(--text);
       border: 1px solid var(--border); border-radius: 6px;
@@ -70,8 +102,6 @@
     }
     .icon-btn:hover { background: var(--border); }
     .lang-btn { padding: 0 0.75rem; width: auto; font-weight: 500; font-size: 0.8rem; }
-
-    h2 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
 
     .otp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.75rem; margin-bottom: 2.5rem; }
     .otp-card {
@@ -157,7 +187,6 @@
     .receipt-font { font-family: 'Inter', sans-serif; }
     .receipt-card {
         box-shadow: 0 20px 40px -15px rgba(0,0,0,0.1);
-        background: #ffffff;
     }
   </style>
 </head>
@@ -210,36 +239,35 @@
           <span id="match-text">Waiting for input...</span>
         </div>
       </div>
-
     </section>
 
     <!-- MERGED RECEIPT GENERATOR -->
     <h2 id="receipt-main-title">Payroll Receipt Generator</h2>
-    <section class="bg-zinc-100 p-8 flex flex-col md:flex-row gap-8 items-center md:items-start justify-center rounded-xl mb-10 border border-zinc-200" style="color: #171717;">
+    <section class="w-full p-8 flex flex-col md:flex-row gap-8 items-center justify-center rounded-xl mb-10 border border-zinc-200 dark:border-[#262626]">
         
-        <!-- Control Panel -->
-        <div class="w-full max-w-md bg-white p-6 rounded-2xl shadow-sm border border-zinc-200">
-            <h3 class="text-xl font-bold mb-4 border-b pb-2">Payout Details</h3>
+        <!-- Control Panel (Now Adapts to Dark Theme) -->
+        <div class="w-full max-w-md bg-white dark:bg-[#121212] p-6 rounded-2xl shadow-sm border border-zinc-200 dark:border-[#262626]">
+            <h3 class="text-xl font-bold mb-4 border-b border-zinc-200 dark:border-[#262626] pb-2 dark:text-[#ededed]">Payout Details</h3>
             <div class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-zinc-700">Amount ($)</label>
-                    <input type="text" id="input-amount" value="5,420.00" class="w-full p-2 border rounded-lg mt-1 focus:ring-2 focus:ring-blue-500 outline-none">
+                    <label class="block text-sm font-medium text-zinc-700 dark:text-[#888888]">Amount ($)</label>
+                    <input type="text" id="input-amount" value="5,420.00" class="w-full p-2 border border-zinc-200 dark:border-[#262626] bg-white dark:bg-[#0a0a0a] dark:text-[#ededed] rounded-lg mt-1 focus:ring-2 focus:ring-blue-500 outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-zinc-700">Title</label>
-                    <input type="text" id="input-title" value="Cycle Payout" class="w-full p-2 border rounded-lg mt-1 focus:ring-2 focus:ring-blue-500 outline-none">
+                    <label class="block text-sm font-medium text-zinc-700 dark:text-[#888888]">Title</label>
+                    <input type="text" id="input-title" value="Cycle Payout" class="w-full p-2 border border-zinc-200 dark:border-[#262626] bg-white dark:bg-[#0a0a0a] dark:text-[#ededed] rounded-lg mt-1 focus:ring-2 focus:ring-blue-500 outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-zinc-700">Payment Method</label>
-                    <input type="text" id="input-method" value="Tokenized Asset" class="w-full p-2 border rounded-lg mt-1 focus:ring-2 focus:ring-blue-500 outline-none">
+                    <label class="block text-sm font-medium text-zinc-700 dark:text-[#888888]">Payment Method</label>
+                    <input type="text" id="input-method" value="Tokenized Asset" class="w-full p-2 border border-zinc-200 dark:border-[#262626] bg-white dark:bg-[#0a0a0a] dark:text-[#ededed] rounded-lg mt-1 focus:ring-2 focus:ring-blue-500 outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-zinc-700">Issue Date</label>
-                    <input type="text" id="input-date" class="w-full p-2 border rounded-lg mt-1 focus:ring-2 focus:ring-blue-500 outline-none">
+                    <label class="block text-sm font-medium text-zinc-700 dark:text-[#888888]">Issue Date</label>
+                    <input type="text" id="input-date" class="w-full p-2 border border-zinc-200 dark:border-[#262626] bg-white dark:bg-[#0a0a0a] dark:text-[#ededed] rounded-lg mt-1 focus:ring-2 focus:ring-blue-500 outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-zinc-700">Status</label>
-                    <input type="text" id="input-status" value="Processed" class="w-full p-2 border rounded-lg mt-1 focus:ring-2 focus:ring-blue-500 outline-none text-green-600 font-medium">
+                    <label class="block text-sm font-medium text-zinc-700 dark:text-[#888888]">Status</label>
+                    <input type="text" id="input-status" value="Processed" class="w-full p-2 border border-zinc-200 dark:border-[#262626] bg-white dark:bg-[#0a0a0a] rounded-lg mt-1 focus:ring-2 focus:ring-blue-500 outline-none text-green-600 font-medium">
                 </div>
                 <button onclick="copyReceipt()" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-md mt-4">
                     Generate & Copy
@@ -248,9 +276,9 @@
             </div>
         </div>
 
-        <!-- Receipt Preview (Target for Image Generation) -->
+        <!-- Receipt Preview (Hardcoded to stay Light so exported images always look correct) -->
         <div id="receipt-target" class="receipt-card receipt-font w-full max-w-[450px] p-8 rounded-3xl border border-zinc-100 relative overflow-hidden bg-white shrink-0">
-            <!-- Header (Updated to exclusively feature the centered logo) -->
+            <!-- Header -->
             <div class="flex flex-col items-center justify-center mb-8 w-full border-b border-zinc-100 pb-6">
                 <img src="company1.png" alt="Company Logo" class="h-12 w-auto object-contain">
             </div>
@@ -577,12 +605,10 @@
     renderOTPCards(); renderTimezones(); syncTime(); 
 
     // === RECEIPT GENERATOR JAVASCRIPT ===
-    // Set dynamic current date on load
     const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     document.getElementById('input-date').value = today;
     document.getElementById('view-date').innerText = today;
 
-    // Sync text inputs
     const inputs = ['amount', 'title', 'date', 'method', 'status'];
     inputs.forEach(id => {
         const el = document.getElementById(`input-${id}`);
@@ -595,13 +621,11 @@
         }
     });
 
-    // Copy to Clipboard Logic
     async function copyReceipt() {
         const node = document.getElementById('receipt-target');
         const statusMsg = document.getElementById('status-msg');
         
         try {
-            // pixelRatio: 4 generates an ultra-high resolution image (perfect for zooming in on phones)
             const blob = await htmlToImage.toBlob(node, { 
                 pixelRatio: 4, 
                 backgroundColor: '#ffffff',
