@@ -649,8 +649,22 @@
                         }
                     });
                 }
-            }
-        });
+              el.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    
+                    const nextId = inputs[index + 1];
+                    
+                    if (nextId) {
+                        const nextEl = document.getElementById(`input-${nextId}`);
+                        if (nextEl) nextEl.focus(); 
+                    } else {
+                        el.blur();
+                    }
+                }
+            });
+        }
+    });
 
     async function copyReceipt() {
         const node = document.getElementById('receipt-target');
