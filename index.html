@@ -624,7 +624,7 @@
     document.getElementById('view-date').innerText = today;
 
     const inputs = ['amount', 'title', 'date', 'method', 'status'];
-        inputs.forEach(id => {
+        inputs.forEach((id, index) => {
             const el = document.getElementById(`input-${id}`);
             if(el) {
                 el.addEventListener('input', () => {
